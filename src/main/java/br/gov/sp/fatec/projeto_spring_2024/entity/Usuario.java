@@ -1,4 +1,4 @@
-package br.gov.sp.fatec.projeto_spring_2024;
+package br.gov.sp.fatec.projeto_spring_2024.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,7 +16,7 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)// quando é auto_increment
     private Long id;
 
-    @Column(name = "usr_name")
+    @Column(name = "usr_nome")
     private String nome;
     
     @Column(name = "usr_senha")
@@ -46,10 +46,14 @@ public class Usuario {
         this.senha = senha;
     }
 
+    public Usuario() { }
+    
     public Usuario(String nome, String senha) {
-        this.nome = nome;
-        this.senha = senha;
+    this();
+    this.nome = nome;
+    this.senha = senha;
     }
+   
 }
 
 // tabela implementada abaixo:
