@@ -47,10 +47,7 @@ public class Trabalho {
         this();
         this.titulo = titulo;
         this.dataHoraEntrega = dataHoraEntrega;
-        this.descricao = descricao;
         this.grupo = grupo;
-        this.nota = nota;
-        this.justificativa = justificativa;
     }
 
     public Trabalho() {

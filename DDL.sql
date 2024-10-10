@@ -4,6 +4,19 @@ create schema spring;
 create user 'user'@'localhost' identified by 'pass123';
 grant select, insert, delete, update on spring.* to user@'localhost';
 use spring;
+
+create table anc_anuncio (
+    anc_id bigint primary key auto_increment,
+    anc_nome_produto varchar(100) not null,
+    anc_descricao varchar(200),
+    anc_data_hora datetime not null,
+    anc_preco float,
+    anc_peso float
+);
+
+insert into anc_anuncio (anc_nome_produto, anc_data_hora, anc_peso) values ('Resistência 6800w', '2024-03-15 23:59:59', 0.2),
+('Liquidificador', current_timestamp(), null);
+
 create table usr_usuario (
  usr_id bigint unsigned not null auto_increment,
  usr_nome varchar(20) not null,

@@ -1,5 +1,6 @@
 package br.gov.sp.fatec.projeto_spring_2024.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,28 +12,29 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.gov.sp.fatec.projeto_spring_2024.entity.Trabalho;
-import br.gov.sp.fatec.projeto_spring_2024.service.ITrabalhoService;
+import br.gov.sp.fatec.projeto_spring_2024.entity.Anuncio;
+import br.gov.sp.fatec.projeto_spring_2024.service.IAnuncioService;
 
 @RestController
 @CrossOrigin
-@RequestMapping(value = "/trabalho")
-public class TrabalhoController {
+@RequestMapping(value = "/anuncio")
+public class AnuncioController {
+
     @Autowired
-    private ITrabalhoService service;
+    private IAnuncioService service;
 
     @GetMapping
-    public List<Trabalho> buscarTodos() {
+    public List<Anuncio> buscarTodos() {
         return service.buscarTodos();
     }
 
     @PostMapping
-    public Trabalho cadastrarTrabalho(@RequestBody Trabalho trabalho) {
-        return service.cadastrarTrabalho(trabalho);
+    public Anuncio cadastrarAnuncio(@RequestBody Anuncio anuncio) {
+        return service.cadastrarAnuncio(anuncio);
     }
 
-    @GetMapping(value = "/{palavra}&{nota}")
-    public List<Trabalho> consultaEspecifica(@PathVariable("palavra") String palavra, @PathVariable("nota") Long nota){
-        return service.consultaEspecifica(palavra, nota);
+    @GetMapping(value = "{data_hora}/{preco}")
+    public List<Anuncio> buscarPorData_HoraEPreco(@PathVariable("data_hora") LocalDateTime data_hora, @PathVariable("preco") Float preco){
+        return service.buscarPorData_HoraEPreco(data_hora, preco);
     }
 }

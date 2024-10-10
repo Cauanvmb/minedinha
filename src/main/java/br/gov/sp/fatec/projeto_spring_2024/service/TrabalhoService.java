@@ -1,15 +1,15 @@
 package br.gov.sp.fatec.projeto_spring_2024.service;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import br.gov.sp.fatec.projeto_spring_2024.entity.Trabalho;
 import br.gov.sp.fatec.projeto_spring_2024.repository.TrabalhoRepository;
 
+@Service
 public class TrabalhoService implements ITrabalhoService {
 
     @Autowired
