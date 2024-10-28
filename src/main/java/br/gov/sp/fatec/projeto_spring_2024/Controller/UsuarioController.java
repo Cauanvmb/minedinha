@@ -1,6 +1,7 @@
-package br.gov.sp.fatec.projeto_spring_2024.controller;
+package br.gov.sp.fatec.projeto_spring_2024.Controller;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,29 +10,37 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.fasterxml.jackson.annotation.JsonView;
+
 import br.gov.sp.fatec.projeto_spring_2024.entity.Usuario;
-import br.gov.sp.fatec.projeto_spring_2024.service.IUsuarioService;
+import br.gov.sp.fatec.projeto_spring_2024.entity.View;
+import br.gov.sp.fatec.projeto_spring_2024.service.UsuarioService;
 
 @RestController
-@CrossOrigin
 @RequestMapping(value = "/usuario")
+@CrossOrigin
 public class UsuarioController {
+    
     @Autowired
-    private IUsuarioService service;
+    private UsuarioService service;
 
     @GetMapping
-    public List<Usuario> buscarTodos() {
-        return service.buscarTodos();
-    }
-
-    @GetMapping(value = "/{usuario}")
-    public Usuario buscarPorId(@PathVariable("usuario") Long id) {
-        return service.buscarPorId(id);
+    @JsonView(View.ViewUsuario.class)
+    public List<Usuario> todosUsuarios() {
+        return service.todosUsuarios();
     }
 
     @PostMapping
+    @JsonView(View.ViewUsuario.class)
     public Usuario novoUsuario(@RequestBody Usuario usuario) {
         return service.novoUsuario(usuario);
+    }
+
+    @GetMapping(value = "/{id}")
+    @JsonView(View.ViewUsuarioCompleto.class)
+    public Usuario buscarPeloId(@PathVariable("id") Long id) {
+        return service.buscarPeloId(id);
     }
 
 }

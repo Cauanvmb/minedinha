@@ -1,29 +1,56 @@
 package br.gov.sp.fatec.projeto_spring_2024.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonView;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "usr_usuario")
 public class Usuario {
 
-    @Id // significa que é PK
-    @Column(name = "usr_id") // name = "nome da coluna referenciada"
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // quando é auto_increment
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "usr_id")
+    @JsonView({View.ViewUsuario.class})
     private Long id;
 
     @Column(name = "usr_nome")
+    @JsonView({View.ViewUsuario.class, View.ViewAnotacao.class})
     private String nome;
 
     @Column(name = "usr_senha")
-    @JsonIgnore
+    @JsonView({View.ViewUsuarioCompleto.class})
     private String senha;
+
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY)
+    @JsonView({View.ViewUsuario.class})
+    private Set<Anotacao> anotacoes;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "uau_usuario_autorizacao", 
+        joinColumns = { @JoinColumn(name = "usr_id")},
+        inverseJoinColumns = { @JoinColumn(name = "aut_id")})
+    @JsonView({View.ViewUsuario.class})
+    private Set<Autorizacao> autorizacoes;
+
+    public Usuario() {}
+
+    public Usuario(String nome, String senha) {
+        setNome(nome);
+        setSenha(senha);
+    }
 
     public Long getId() {
         return id;
@@ -49,38 +76,20 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public Usuario() {
+    public Set<Anotacao> getAnotacoes() {
+        return anotacoes;
     }
 
-    public Usuario(String nome, String senha) {
-        this();
-        this.nome = nome;
-        this.senha = senha;
+    public void setAnotacoes(Set<Anotacao> anotacoes) {
+        this.anotacoes = anotacoes;
     }
 
-}
+    public Set<Autorizacao> getAutorizacoes() {
+        return autorizacoes;
+    }
 
-// tabela implementada abaixo:
-// create table usr_usuario (
-// usr_id bigint unsigned not null auto_increment,
-// usr_nome varchar(20) not null,
-// usr_senha varchar(150) not null,
-// primary key (usr_id),
-// unique key uni_usuario_nome (usr_nome)
-// );
-
-// • @Entity – Indica que a classe mapeia uma tabela;
-// • @Table – Utilizada quando o nome da tabela difere do nome da classe. Aqui
-// você indica, no
-// parâmetro "name", o nome da tabela mapeada;
-// • @Column – Utilizada quando o nome do atributo difere do nome da coluna.
-// Aqui você indica,
-// no parâmetro "name", o nome da coluna associada ao atributo;
-// • @Id – Essa anotação deve ser colocada antes do atributo associado à coluna
-// que possui a
-// restrição de chave primária;
-// • @GeneratedValue – Essa anotação deve ser utilizada quando o valor do
-// atributo é gerado
-// automaticamente. O parâmetro "strategy" deve ser configurado com o tipo de
-// geração utilizado
-// ("GenerationType.IDENTITY" corresponde a "auto_increment").
+    public void setAutorizacoes(Set<Autorizacao> autorizacoes) {
+        this.autorizacoes = autorizacoes;
+    }
+    
+} 
